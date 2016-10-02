@@ -1,8 +1,16 @@
 #!/bin/bash
 
+#
+#Author:	Michel Cantacuzene
+#Version:	0.1
+#Name:		q3.bash
+#Description:	Sorts the given animals using 3 categories: Name, Wheight, Length.
+#
+
+
 ANIMALS="blue_whale crocodile elephant giraffe hippopotamus humpback_whale ostrich sea_turtle"
 
-function picmake()
+function picmake() #function that creates the result.jpg image
 {
 	#first parameter is the filename
 	filename=$1
@@ -18,7 +26,7 @@ function picmake()
 	eog -n result.jpg &
 }
 
-function namesort()
+function namesort() #function that sorts the animals alphabeticaly
 {
 	FILES=$ANIMALS
 	for i in 1 2 3 4 5 6 7 8
@@ -31,7 +39,7 @@ function namesort()
 	cat names.txt
 }
 
-function wheightsort()
+function wheightsort() #function that sorts the animals by wheight
 {
 	FILES=$ANIMALS
 	for i in 1 2 3 4 5 6 7 8
@@ -46,7 +54,7 @@ function wheightsort()
 	cat wheight.txt
 }
 
-function lengthsort()
+function lengthsort() #function that sorts the animals by length
 {
 	FILES=$ANIMALS
 	for i in 1 2 3 4 5 6 7 8
@@ -61,7 +69,7 @@ function lengthsort()
 	cat length.txt
 }
 
-function main()
+function main() #main function
 {
 	case "$1" in
 		alpha)
@@ -84,4 +92,4 @@ function main()
 	esac
 }
 
-main $1
+main $1 #run the program
