@@ -4,7 +4,7 @@
 #Author:	Michel Cantacuzene
 #Version:	0.1
 #Name:		q2.bash
-#Description:	Prevides optimal time waste by displaying N images (N being a paramater) at a time to the user and cycling endlessly.
+#Description:	Provides optimal time waste by displaying N images (N being a paramater) at a time to the user and cycling endlessly.
 #
 
 #define the numebr of images to be opened:
