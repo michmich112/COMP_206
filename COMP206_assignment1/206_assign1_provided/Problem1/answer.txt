@@ -1,0 +1,6 @@
+This file contains a message with the answer to part 1. The message is:
+
+"Look what I learned in 206!"
+
+Congratulations if you read this.
+
