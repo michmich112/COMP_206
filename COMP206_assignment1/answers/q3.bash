@@ -15,12 +15,12 @@ function picmake() #function that creates the result.jpg image
 	#first parameter is the filename
 	filename=$1
 	animal=`head -n 1 $filename | tail -n 1`
-	file="jpgs/"$animal".jpg"
+	file=$animal".jpg"
 	cp $file result.jpg
 	for i in 2 3 4 5 6 7 8
 	do
 		animal=`head -n $i $filename | tail -n 1`
-		file="jpgs/"$animal".jpg"
+		file=$animal".jpg"
 		convert result.jpg $file -append result.jpg
 	done
 	eog -n result.jpg &
@@ -46,7 +46,7 @@ function wheightsort() #function that sorts the animals by wheight
 	do
 		NAME=`echo $FILES | cut -d' ' -f1`
 		FILES="`echo $FILES | cut -d' ' -f2-`"
-		VAL=`cat "./data/"$NAME".dat" | cut -d' ' -f1`
+		VAL=`cat $NAME".dat" | cut -d' ' -f1`
 		echo "$VAL $NAME " >> tmp.txt
 	done
 	cat tmp.txt | sort -n | cut -d' ' -f2 > wheight.txt
@@ -61,7 +61,7 @@ function lengthsort() #function that sorts the animals by length
 	do
 		NAME=`echo $FILES | cut -d' ' -f1`
 		FILES="`echo $FILES | cut -d' ' -f2-`"
-		VAL=`cat "./data/"$NAME".dat" | cut -d' ' -f2`
+		VAL=`cat $NAME".dat" | cut -d' ' -f2`
 		echo "$VAL $NAME " >> tmp.txt
 	done
 	cat tmp.txt | sort -n | cut -d' ' -f2 > length.txt

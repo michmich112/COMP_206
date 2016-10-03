@@ -13,14 +13,6 @@ NUM=$1
 #define the files we can use
 FILES="blue_whale.jpg crocodile.jpg elephant.jpg giraffe.jpg hippopotamus.jpg humpback_whale.jpg ostrich.jpg sea_turtle.jpg"
 
-#we kill all the preveously opened eog instances (instances that were opened by the program)
-#We first verify if there are eog processes open
-PROC=`ps | grep eog`
-if [ -n "$PROC" ]
-then
-	killall eog
-fi
-
 #function to open a new instance of eog with a different animal
 function openNew()
 {
@@ -49,21 +41,30 @@ function initiate()
 #main function
 function main()
 {
-	if [ $1 -eq $1 ] 2>/dev/null;
+	
+	#we kill all the preveously opened eog instances (instances that were opened by the program)
+	#We first verify if there are eog processes open
+	PROC=`ps | grep eog`
+	if [ -n "$PROC" ]
 	then
-		while [ 1 ]
-		do
-			INSTANCES=`ps | grep eog | wc -l`
-			if [ $INSTANCES -lt $NUM ]
-			then
-				openNew
-			fi
-		done
-	else
-		echo "Provide an positive integer to run the program properly"
+		killall eog
 	fi
+	
+	case $NUM in
+		''|*[!0-9]*)
+			echo "Please input a positive integer to run the program" ;;
+		*)
+			initiate
+			while [ 1 ]
+			do
+				INSTANCES=`ps | grep eog | wc -l`
+				if [ $INSTANCES -lt $NUM ]
+				then
+					openNew
+				fi
+			done
+	esac
 }
 
 #program
-initiate
 main
