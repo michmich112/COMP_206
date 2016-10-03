@@ -49,14 +49,19 @@ function initiate()
 #main function
 function main()
 {
-	while [ 1 ]
-	do
-		INSTANCES=`ps | grep eog | wc -l`
-		if [ $INSTANCES -lt $NUM ]
-		then
-			openNew
-		fi
-	done
+	if [ $1 -eq $1 ] 2>/dev/null;
+	then
+		while [ 1 ]
+		do
+			INSTANCES=`ps | grep eog | wc -l`
+			if [ $INSTANCES -lt $NUM ]
+			then
+				openNew
+			fi
+		done
+	else
+		echo "Provide an positive integer to run the program properly"
+	fi
 }
 
 #program
