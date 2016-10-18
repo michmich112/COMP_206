@@ -5,6 +5,7 @@ void translator(char* argv[]);
 
 int main(int argc, char* argv[]){
 	translator(argv);
+	return 0;
 }
 void translator(char* argv[]){
 	char Sun[30], Mon[30], Tue[30], Wed[30], Thu[30], Fri[30], Sat[30]; // initialize the days as string arrays witha maximum of 30 characters.
@@ -97,5 +98,4 @@ void translator(char* argv[]){
 	}
 	
 	printf("%s %s %s %s %s %s\n", tday, tmonth, Date, Time, Zone, Year);
-	return 0;
 }
