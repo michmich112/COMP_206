@@ -1,0 +1,9 @@
+Question 1:
+
+Part a) When trying to catthe file, we are presented with the following error: "cat: answer.txt: Permission denied". Even if we try to edit it with a text editor (like vim by running: "vim answer.txt"), we get presented with a "permission denied" error.
+
+Part b) To fix this proble, we first notice that all the persissions on the file "answer.txt" have been turned off (we see the following when we type ls -l: "---------- 1 user group 139 Sep 22 2015 answer.txt").
+To correct this we type: "chmod u+r answer.txt" or "chmod 400 answer.txt" to give the user reading privileges.
+The message is:
+
+"Look what I learned in 206!"
