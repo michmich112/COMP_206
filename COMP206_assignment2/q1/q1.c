@@ -1,12 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void getData(char Sun[],char Mon[],char Tue[],char Wed[],char Thu[],char Fri[],char Sat[],char Jan[],char Feb[],char Mar[],char Apr[],char May[],char Jun[],char Jul[],char Aug[],char Sep[],char Oct[],char Nov[],char Dec[]);
+void getData(char Sun[],char Mon[],char Tue[],char Wed[],char Thu[],char Fri[],char Sat[],char Jan[],char Feb[],char Mar[],char Apr[],char May[],char Jun[],char Jul[],char Aug[],char Sep[],char Oct[],char Nov[],char Dec[],char* argv[]);
 
 int main(int argc, char* argv[]){
-
-	char Sun[30], Mon[30], Tue[30], Wed[30], Thu[30], Fri[30], Sat[30]; // initialize the days as string arrays witha maximum of 30 characters.
-	char Jan[30], Feb[30], Mar[30], Apr[30], May[30], Jun[30], Jul[30], Aug[30], Sep[30], Oct[30], Nov[30], Dec[30]; //initialize the months as string arrays with a maximum of 30 characters.
+	int size = 30;
+	
+	char Sun[size], Mon[size], Tue[size], Wed[size], Thu[size], Fri[size], Sat[size]; // initialize the days as string arrays witha maximum of 30 characters.
+	char Jan[size], Feb[size], Mar[size], Apr[size], May[size], Jun[size], Jul[size], Aug[size], Sep[size], Oct[size], Nov[size], Dec[size]; //initialize the months as string arrays with a maximum of 30 characters.
 		
 	char Day[3], Month[3], Date[2], Time[8], Zone[3], Year[4]; 
 	
@@ -14,15 +15,8 @@ int main(int argc, char* argv[]){
 	int month = Month[0] + Month[1] + Month[2];
 
 	char *tday, *tmonth; //pointer
-
-	FILE * dataFile;
-	if((dataFile= fopen(argv[1], "r")) == NULL){
-		printf("Can't read from file %s\n",argv[1]);
-		exit(1);
-	} else {
-		fscanf(dataFile," %s %s %s %s %s %s %s", Sun, Mon, Tue, Wed, Thu, Fri, Sat);
-		fscanf(dataFile," %s %s %s %s %s %s %s %s %s %s %s %s", Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec);
-	}
+	
+	getData(Sun,Mon,Tue,Wed,Thu,Fri,Sat,Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec,argv);
 
 	scanf("%s %s %s %s %s %s",Day,Month,Date,Time,Zone,Year);
 	
@@ -98,3 +92,18 @@ int main(int argc, char* argv[]){
 	printf("%s %s %s %s %s %s\n", tday, tmonth, Date, Time, Zone, Year);
 	return 0;
 }
+
+void getData(char Sun[],char Mon[],char Tue[],char Wed[],char Thu[],char Fri[],char Sat[],char Jan[],char Feb[],char Mar[],char Apr[],char May[],char Jun[],char Jul[],char Aug[],char Sep[],char Oct[],char Nov[],char Dec[],char* argv[]){
+
+	FILE * dataFile;
+	if((dataFile= fopen(argv[1], "r")) == NULL){
+		printf("Can't read from file %s\n",argv[1]);
+		exit(1);
+	} else {
+		fscanf(dataFile," %s %s %s %s %s %s %s", Sun, Mon, Tue, Wed, Thu, Fri, Sat);
+		fscanf(dataFile," %s %s %s %s %s %s %s %s %s %s %s %s", Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec);
+	}
+	fclose(dataFile);
+}
+
+
