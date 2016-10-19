@@ -24,8 +24,8 @@ void translator(char* argv[]){
 	//associate the data from stdin (the piped date input) to the correct variables (might not work on all systems
 	char Day[3], Month[3], Date[2], Time[8], Zone[3], Year[4];
 	
-	int day = Day[0] + Day[1] + Day[2];
-	int month = Month[0] + Month[1] + Month[2];
+	int day;
+	int month;
 
 	char *tday, *tmonth;
 	
@@ -41,7 +41,10 @@ void translator(char* argv[]){
 	}
 
 	scanf("%s %s %s %s %s %s",Day,Month,Date,Time,Zone,Year);
-	
+
+	day = Day[0] + Day[1] + Day[2];	
+	month =  Month[0] + Month[1] + Month[2];
+
 	// switch statement to determine the day and the month.	
 	switch(day){
 		case 298 :
@@ -66,7 +69,7 @@ void translator(char* argv[]){
 			tday = Sun;
 			break;	
 		default:
-			printf("No value found\n");
+			printf("No value found for week\n");
 			exit(1);
 	}
 	
