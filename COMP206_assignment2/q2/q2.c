@@ -12,35 +12,47 @@
 static int DAYSIZE;
 
 void translator(char* argv[]); //translator function with the important code
-void drawCalendar(int *daysLeft, int currentDay);
+void drawCalendar(int *daysLeft, int *currentDay);
 void completeSpaces(int i);
 
 int main(int argc, char* argv[]){
 	DAYSIZE = atoi(argv[2]);
-	int days = 60;
-	drawCalendar(&days,3);
+	int days , currentDay = atoi(argv[3]), i;
+	for(i=0;i<12;i++){
+		days=30;
+		drawCalendar(&days,&currentDay);
+	}
 	//translator(argv);
 	return 0;
 }
 
-void drawCalendar(int *daysLeft, int currentDay){
-	*daysLeft=(*daysLeft%31)==0?*daysLeft-1:*daysLeft-0;
-	//printf("%d",*daysLeft);
+void drawCalendar(int *daysLeft, int *currentDay){
+	//*daysLeft=(*daysLeft%30)==0?*daysLeft-1:*daysLeft-0;
+	//printf("%d %d\n\n",*daysLeft,30-(*daysLeft%30));
 	//*daysLeft -= 1;
 	int i;
-	for(i=1;i<currentDay;i++){
+	for(i=1;i<*currentDay;i++){
 		printf("* ");
 		completeSpaces(0);
 	}
-	while(30-(*daysLeft%31)>0){
-		if (currentDay==8){printf("\n");currentDay=1;}
-		printf("* %d",30-(*daysLeft%31));
-		completeSpaces(30-(*daysLeft%31));
+	for(i=1;i<31;i++){
+		if (*currentDay==8){printf("\n");*currentDay=1;}
+		printf("* %d",i);
+		completeSpaces(i);
+		*currentDay+=1;
+	}
+	/*
+	while(30-(*daysLeft%30)>0){
+		if (*currentDay==8){printf("\n");*currentDay=1;}
+		printf("* %d",30-(*daysLeft%30));
+		completeSpaces(30-(*daysLeft%30));
 		//printf("%d %d",*daysLeft,*daysLeft%30);
 		*daysLeft-=1;
-		currentDay++;
+		printf("%d",*daysLeft);
+		*currentDay+=1;
 	}
-	for(i=0;i<(7-currentDay)+1;i++){
+	*/
+	for(i=0;i<(7-*currentDay)+1;i++){
 		printf("* ");
 		completeSpaces(0);
 	}
