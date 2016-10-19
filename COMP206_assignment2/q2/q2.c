@@ -12,7 +12,6 @@
 static int DAYSIZE;
 static char Jan[30], Feb[30], Mar[30], Apr[30], May[30], Jun[30], Jul[30], Aug[30], Sep[30], Oct[30], Nov[30], Dec[30]; //initialize the months as string arrays with a maximum of 30 characters.
 static char Sun[30], Mon[30], Tue[30], Wed[30], Thu[30], Fri[30], Sat[30]; // initialize the days as string arrays witha maximum of 30 characters.
-//static char Jan[30], Feb[30], Mar[30], Apr[30], May[30], Jun[30], Jul[30], Aug[30], Sep[30], Oct[30], Nov[30], Dec[30]; //initialize the months as string arrays with a maximum of 30 characters.
 static char* Days[]={Sun,Mon,Tue,Wed,Thu,Fri,Sat};
 
 void translator(char* argv[]); //translator function with the important code
@@ -24,7 +23,8 @@ void printWeek();
 void writeWeekday(int pos);
 
 int main(int argc, char* argv[]){
-	DAYSIZE = atoi(argv[2]); //Be carefull if argv[2]==1
+	if(argc<4 || atoi(argv[2])<2 || atoi(argv[3])<1 || atoi(argv[3])>7){printf("Input is: $./executable label_file.txt <int1> <int2>\n\t<int1> >= 2\n\t1<= <int2> <=7\n");exit(1); //Be carefull if argv[2]==1
+	}else {DAYSIZE =atoi(argv[2]);}
 	int lineLength=7*(DAYSIZE+3);
 	int currentDay = atoi(argv[3]), i;
 	
