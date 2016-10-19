@@ -1,33 +1,48 @@
+/*
+ * =======================================================
+ * Name:		q1.c
+ * Author:		Mcihel Cantacuzene
+ * Description:		Question1 of COMP 206 assignment 2
+ * =======================================================
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 
-void translator(char* argv[]);
+void translator(char* argv[]); //translator function with the important code
 
 int main(int argc, char* argv[]){
 	translator(argv);
 	return 0;
 }
+
 void translator(char* argv[]){
+
 	char Sun[30], Mon[30], Tue[30], Wed[30], Thu[30], Fri[30], Sat[30]; // initialize the days as string arrays witha maximum of 30 characters.
 	char Jan[30], Feb[30], Mar[30], Apr[30], May[30], Jun[30], Jul[30], Aug[30], Sep[30], Oct[30], Nov[30], Dec[30]; //initialize the months as string arrays with a maximum of 30 characters.
 
-	FILE * dataFile;
-	if((dataFile= fopen(argv[1], "r")) == NULL){
-		printf("Can't read from file %s\n",argv[1]);
-		exit(1);
-	} else {
-		fscanf(dataFile," %s %s %s %s %s %s %s", Sun, Mon, Tue, Wed, Thu, Fri, Sat);
-		fscanf(dataFile," %s %s %s %s %s %s %s %s %s %s %s %s", Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec);
-	}
-
+	//associate the data from stdin (the piped date input) to the correct variables (might not work on all systems
 	char Day[3], Month[3], Date[2], Time[8], Zone[3], Year[4];
-	scanf("%s %s %s %s %s %s",Day,Month,Date,Time,Zone,Year);
 	
 	int day = Day[0] + Day[1] + Day[2];
 	int month = Month[0] + Month[1] + Month[2];
 
 	char *tday, *tmonth;
 	
+	//open the file stream and read the data
+	FILE * dataFile;
+	if((dataFile= fopen(argv[1], "r")) == NULL){
+		printf("Can't read from file %s\n",argv[1]);
+		exit(1);
+	} else {
+		// we assume that the file arangement is the same for all label files
+		fscanf(dataFile," %s %s %s %s %s %s %s", Sun, Mon, Tue, Wed, Thu, Fri, Sat);
+		fscanf(dataFile," %s %s %s %s %s %s %s %s %s %s %s %s", Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec);
+	}
+
+	scanf("%s %s %s %s %s %s",Day,Month,Date,Time,Zone,Year);
+	
+	// switch statement to determine the day and the month.	
 	switch(day){
 		case 298 :
 			tday = Mon;
