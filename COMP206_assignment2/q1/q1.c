@@ -1,7 +1,7 @@
 /*
  * =======================================================
- * Name:		q1.c
- * Author:		Mcihel Cantacuzene
+ * Name:			q1.c
+ * Author:			Michel Cantacuzene
  * Description:		Question1 of COMP 206 assignment 2
  * =======================================================
  */
@@ -11,7 +11,7 @@
 
 void translator(char* argv[]); //translator function with the important code
 
-int main(int argc, char* argv[]){
+int main(int argc, char* argv[]){ //main function
 	translator(argv);
 	return 0;
 }
@@ -27,7 +27,7 @@ void translator(char* argv[]){
 	int day;
 	int month;
 
-	char *tday, *tmonth;
+	char *tday, *tmonth; //pointers 
 	
 	//open the file stream and read the data
 	FILE * dataFile;
@@ -42,12 +42,12 @@ void translator(char* argv[]){
 
 	scanf("%s %s %s %s %s %s",Day,Month,Date,Time,Zone,Year);
 
-	day = Day[0] + Day[1] + Day[2];	
-	month =  Month[0] + Month[1] + Month[2];
+	day = Day[0] + Day[1] + Day[2];	//we sum up the ascii codes to get the cases ex: Mon = M+o+n = 77+111+110 = 298
+	month =  Month[0] + Month[1] + Month[2];  //we sum up the ascii codes to get the cases ex: Oct = O+c+t = 79+99+116 = 294
 
 	// switch statement to determine the day and the month.	
 	switch(day){
-		case 298 :
+		case 298 : //we sum up the ascii codes to get the cases ex: Mon = M+o+n = 77+111+110 = 298
 			tday = Mon;
 			break;
 		case 302 :
@@ -68,7 +68,7 @@ void translator(char* argv[]){
 		case 310 :
 			tday = Sun;
 			break;	
-		default:
+		default: //default not necessary but useful for debug
 			printf("No value found for week\n");
 			exit(1);
 	}
@@ -110,10 +110,10 @@ void translator(char* argv[]){
 		case 268 :
 			tmonth = Dec;
 			break;
-		default:
+		default: //default not necessary but useful for debug
 			printf("No value found for month\n");
 			exit(1);
 	}
 	
-	printf("%s %s %s %s %s %s\n", tday, tmonth, Date, Time, Zone, Year);
+	printf("%s %s %s %s %s %s\n", tday, tmonth, Date, Time, Zone, Year); //print in the correct way
 }
