@@ -12,6 +12,7 @@
 void translator(char* argv[]); //translator function with the important code
 
 int main(int argc, char* argv[]){ //main function
+	if (argc != 2){printf("How to use: pipe date to program and pass emplate file as argument:\n\tdate | ./a.out template_file.txt\n");exit(1);}
 	translator(argv);
 	return 0;
 }
@@ -40,11 +41,12 @@ void translator(char* argv[]){
 		fscanf(dataFile," %s %s %s %s %s %s %s %s %s %s %s %s", Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec);
 	}
 
+	//if (scanf("%s %s %s %s %s %s",Day,Month,Date,Time,Zone,Year) <0){printf("How to use: pipe date to program and pass emplate file as argument:\n\tdate | ./a.out template_file.txt\n");exit(1);}
 	scanf("%s %s %s %s %s %s",Day,Month,Date,Time,Zone,Year);
 
 	day = Day[0] + Day[1] + Day[2];	//we sum up the ascii codes to get the cases ex: Mon = M+o+n = 77+111+110 = 298
 	month =  Month[0] + Month[1] + Month[2];  //we sum up the ascii codes to get the cases ex: Oct = O+c+t = 79+99+116 = 294
-
+	
 	// switch statement to determine the day and the month.	
 	switch(day){
 		case 298 : //we sum up the ascii codes to get the cases ex: Mon = M+o+n = 77+111+110 = 298
