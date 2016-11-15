@@ -71,7 +71,7 @@ void translator(char* argv[]){
 			tday = Sun;
 			break;	
 		default: //default not necessary but useful for debug
-			printf("No value found for week\n");
+			printf("No value found for week, make sure the input is correct\n");
 			exit(1);
 	}
 	
