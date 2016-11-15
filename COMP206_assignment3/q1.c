@@ -1,11 +1,5 @@
-//Ecryptor.c
-//encrypts a file 
-//usage: ./exe <key> <filename>
-
 #include <stdio.h>
-#include <stdlib.h>
-
-static int inputSize;
+#include <sdtlib.h>
 
 struct s_listnode { //standard struct used for both Stack and Queue
     char element;
@@ -21,76 +15,69 @@ struct Stack newStack(void); //function to create a new Stack
 void push(char elem, struct Stack * stack); //function to pus an element to the stack
 char pop(struct Stack * stack); //function to pop an element from the stack
 
-//functions for the encryption
-void reverseStrings(char *array);
-void encrypt(char *input, int key);
+//functions for the main decryption program
+int size(char array);
+void reverseStrings(char * array);
+void printResult(char * array);
+void decrypt(char* input, int key);
 
 int main(int argc, char* argv[]){
-	printf("started \n");
+	//getting the data
 	FILE * dataFile;
-	char read,result[1000];
+	char read, result[1000];
 	int i;
-	//for(i=0;i<1000;i++){result[i]='\0';}
+	for(i=0; i<1000; i++){result[i]='\0';}
 	if((dataFile = fopen(argv[2], "r")) == NULL){
 		printf("Can't read from file %s\n", argv[2]);
 		exit(1);
 	}
 	i=0;
-	printf("accessing data\n");
-	while((read = fgetc(dataFile)) != EOF){
-		printf("\taccessing %d\n",read);
-		result[i] = read;
+	while((read == fgetc(dataFile))!= EOF){
+		result[i]=read;
 		i++;
 	}
 	fclose(dataFile);
-	printf("data read!\n");
-	//Set input size
-	inputSize = i;
-	reverseStrings(result);
-	printf("strings revered\n");
-	printf("starting encryption process\n");
-	encrypt(result,atoi(argv[1]));
-	printf("encrypted\n");
+	decrypt(&result,atoi(argv[1]));
+	reverseStrings(&result);
+	printResult(&result);
 
-	FILE * resultFile;
-	resultFile = fopen(argv[2],"w");
-	for(i=0;i<1000;i++){
-		if(result[i] != atoi(argv[1])){
-			printf("\t putting %d \n",result[i]);
-			fputc(result[i],resultFile);
-		}
-	}
-	fclose(resultFile);
+	return 0;
 }
 
-void reverseStrings(char *array){
-	struct Stack reverseStack = newStack();
+void reverseStrings(char * array){
+	Stack reverseStack = newStack();
 	int i=0,j=0;
-	char result[inputSize];
-	while(i<inputSize){
-		while((array[i]) != 32 && array[i] != '\0' && array[i] != 10){
-			printf("%d \n",i);
-			push(array[i],&reverseStack);
+	char result[size(*array)];
+	while(i<size(*array)){
+		while((*array[i]) != 32){
+			reverseStack.push(*array[i]);
 			i++;
 		}
-		//i++;
-		for(j=j;j<i;j++){
-			result[j]=pop(&reverseStack);
+		i++;
+		for(j;j<i;j++){
+			result[j]=reverseStack.pop();
 		}
 		j++;
 		result[j]=32;
 	}
-	for(i=0;i<inputSize;i++){
-		array[i]=result[i];
+	for(i=0;i<size(*array);i++){
+		*array[i]=result[i];
 	}
 }
 
-void encrypt(char *input, int key){
+void decrypt(char* input, int key){
 	int i;
-	for(i=0;i<inputSize;i++){
-		printf("%c\t%d\n",input[i],input[i]);
-		input[i] = (char) ((input[i] + key)%256);
+	for(i=0;i<size(input);i++){
+		 *input[i] = (*input[i] - key)%256;
 	}
+}
+
+void printResults(char * array){
+	int i;
+	for(i=0;i<size(*array);i++){
+		printf("%c",*array[i]);
+	}
+	printf("\n");
 }
 
 struct Stack newStack(void){ //function to create a new stack
@@ -118,4 +105,10 @@ char pop(struct Stack * stack) { //function to pop the top element from a specif
     }
 }
 
-
+int size(char array){
+	int i=0;
+	while(array[i]!= '\0'){
+		i += 1;
+	}
+	return i;
+}
