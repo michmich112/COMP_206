@@ -1,0 +1,37 @@
+unsigned int key=0;
+
+while(key<=256){
+
+	decrypt(strings,key, index);
+	int key2 = key;
+	for(int curr = 0; curr<= index; curr++){
+		char c = strings[curr];
+		//printf("%d\n",curr);
+		if(c == 32 || c == '\0'|| c == 10 || (97<=c && 122>=c) || (65<=c && 90>= c)){
+			//printf("%s\n", strings);
+			if(curr == index){
+			//	decrypt(strings,key,index);
+			printf("%d\n",key2);
+				printf("%s\n",strings);
+				exit(1);
+			}else { 
+
+				continue; 
+			}
+		
+		} else {
+			break;
+		}
+		//key++;
+		
+	}
+		key++;
+
+
+}
+
+
+fclose(in); 
+
+}
+
