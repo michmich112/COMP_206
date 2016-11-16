@@ -1,6 +1,10 @@
-/*Chat Daemon*/
-/*we will use a linked list to make messages as long as people want*/
-/*usage: ./a.out <incoming> <outcoming> <username> */
+/*
+ * Name:		q2_chat.c
+ * Author:		Michel Cantacuzene
+ * Version:		0.1
+ * Description:	Matt's Chat Daemon
+ * Usage:		./executable <incoming_file> <outgoing_file> <username>
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,7 +23,7 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 
-int chatDaemon(char *argv[],int runs){
+int chatDaemon(char *argv[],int runs){  //function for the chat daemon, return 1 for a successful turn
 	char *username = argv[3],tmp;
 	FILE * inputFile;
 	FILE * outputFile;
@@ -55,7 +59,7 @@ int chatDaemon(char *argv[],int runs){
 }
 
 
-void printMessage(FILE * stream,char tt){
+void printMessage(FILE * stream,char tt){ //function to print the received messages
 	char tmp;
 	printf("Received: %c",tt);
 	while((tmp= fgetc(stream)) != EOF){
@@ -64,7 +68,7 @@ void printMessage(FILE * stream,char tt){
 	printf("\n");
 }
 
-void sendMessage(FILE * stream,char *username){
+void sendMessage(FILE * stream,char *username){ //function to send messages
 	char tmp;
 	printf("Send:");
 	tmp=getc(stdin);
