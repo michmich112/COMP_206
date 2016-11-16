@@ -1,106 +1,84 @@
 /*Chat Daemon*/
 /*we will use a linked list to make messages as long as people want*/
+/*usage: ./a.out <incoming> <outcoming> <username> */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-void chatDaemon(char *argv[]);
-void printMessage(FILE * stream);
-/*
-void enqueue(char elem, struct queue * data);
-char dequeue(struct queue * data);
-
-struct s_listnode {
-    char element;
-    struct s_listnode * pnext;
-};
-
-struct queueData {
-    struct s_listnode *queue_buffer; //start empty
-    struct s_listnode *prear; //start empty
-};
-*/
+int chatDaemon(char *argv[], int runs);
+void printMessage(FILE * stream, char tmp);
+void sendMessage(FILE * stream, char *username);
 
 int main(int argc, char *argv[]){
+	int i=1,runs=1;
+	while(i){
+		i=chatDaemon(argv,runs);
+		runs++;
+	}
 	return 0;
 }
 
-void chatDaemon(char *argv[]){
-	char *username = argv[3];
+int chatDaemon(char *argv[],int runs){
+	char *username = argv[3],tmp;
 	FILE * inputFile;
 	FILE * outputFile;
 
-	//struct queue inputQueue = newQueue();
-
 	inputFile = fopen(argv[1],"r");
-	outputFile = fopen(argv[2],"w"); // opens the file for writing and creates it if it doesn't exist
+	tmp = fgetc(inputFile);
 
-	//while(inputFile == NULL){inputFile = fopen(argv[1],"r");} //if the file doesn't exist it means that the other person isn't cpnnected yet
-	if(inputFile == NULL ||fgetc(inputFile)==EOF){
+	if((inputFile == NULL ||tmp==EOF)&& runs == 1){
 		printf("Nothing received yet.\n");
-	} else {
-		printMessage(inputFile);
+	} else if((inputFile == NULL || tmp==EOF) && runs >= 2){
+		while(inputFile == NULL || tmp==EOF){
+			fclose(inputFile);
+			sleep(1);//wait before reopening the file to avoid stream errors on the same file.
+			inputFile = fopen(argv[1],"r");
+			tmp = fgetc(inputFile);
+		}
+		printMessage(inputFile,tmp);
 		fclose(inputFile);
-		//inputFile = fopen(argv[1],"w")
+		inputFile = fopen(argv[1], "w");
+		fclose(inputFile);
+	} else {
+		printMessage(inputFile,tmp);
+		fclose(inputFile);
+		inputFile = fopen(argv[1], "w");
+		fclose(inputFile);
 	}
 
+	outputFile = fopen(argv[2],"w"); // opens the file for writing and creates it if it doesn't exist
+	sendMessage(outputFile,username);
+	fclose(outputFile);
 
+	return 1;
 }
 
-void printMessage(FILE * stream){
+
+void printMessage(FILE * stream,char tt){
 	char tmp;
-	printf("Received: ");
+	printf("Received: %c",tt);
 	while((tmp= fgetc(stream)) != EOF){
 		printf("%c",tmp);
 	}
+	printf("\n");
 }
 
-void sendMessage(FILE * stream){
+void sendMessage(FILE * stream,char *username){
 	char tmp;
 	printf("Send:");
 	tmp=getc(stdin);
 	if(tmp=='\n'){
-		printf("Session terminated due to end of input stream\n");exit(1);
+		printf("Session terminated due to end of input stream\n");
+		exit(1);
 	} else {
+		fputc('[',stream);
+		fputs(username,stream);
+		fputs("] ",stream);
 		while(tmp!='\n'){
-			fputc("%c",stream);
+			fputc(tmp,stream);
 			tmp=getc(stdin);
 		}
+		fputc(EOF,stream);
 	}
-	printf("\n");
 }
-/*
-struct queue newQueue(void){
-    struct queue data;
-    data.queue_buffer = NULL;
-    data.prear = NULL;
-    return data;
-}
-    
-void enqueue(char elem,struct queue * data) {
-    struct s_listnode *new_node = (struct s_listnode *) malloc(sizeof(struct s_listnode));
-    new_node->element = elem;
-    new_node->pnext = NULL; // at rear
-    if (data->prear){
-        data->prear->pnext = new_node;
-    } else {
-        data->queue_buffer = new_node;
-    }
-    data->prear = new_node;
-}
-
-char dequeue(struct queue * data) {
-    if (data->queue_buffer) {
-        struct s_listnode *pelem = (data->queue_buffer);
-        char elem = data->queue_buffer->element;
-        data->queue_buffer = pelem->pnext;
-        if (pelem == (data->prear)){
-            data->prear = NULL;
-        }
-        free(pelem);
-        return elem;
-    } else {
-        return 0;
-    }
-}
-*/
