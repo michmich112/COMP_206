@@ -4,9 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/Michel/Code/C/COMP_206/COMP206_assignment3/encryption.c" "/Users/Michel/Code/C/COMP_206/COMP206_assignment3/CMakeFiles/swapLib.dir/encryption.c.o"
+  "/home/2016/mcanta5/Code/COMP_206/COMP206_assignment3/encryption.c" "/home/2016/mcanta5/Code/COMP_206/COMP206_assignment3/CMakeFiles/swapLib.dir/encryption.c.o"
   )
-set(CMAKE_C_COMPILER_ID "Clang")
+set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH

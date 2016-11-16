@@ -1,8 +1,8 @@
 /*
- * Name:		q2_chat.c
+ * Name:		q3_encrypted_chat.c
  * Author:		Michel Cantacuzene
  * Version:		0.1
- * Description:	Matt's Chat Daemon
+ * Description:		Matt's Encrypted Chat Daemon
  * Usage:		./executable <incoming_file> <outgoing_file> <username>
  */
 
@@ -16,6 +16,7 @@ void printMessage(FILE * stream, char tt,int key);
 void sendMessage(FILE * stream, char *username,int key);
 
 int main(int argc, char *argv[]){
+	if(argc != 5){printf("Error. Wrong Input.\nUsage: ./executable [incoming_file] [outgoing_file] [username] [key]\n");exit(1);}
 	int i=1,runs=1;
 	while(i){
 		i=chatDaemon(argv,runs);
@@ -31,7 +32,6 @@ int chatDaemon(char *argv[],int runs){  //function for the chat daemon, return 1
 	FILE * outputFile;
 
 	inputFile = fopen(argv[1],"r");
-	//tmp = fgetc(inputFile);
 
 	if((inputFile == NULL) && runs == 1){
 		printf("Nothing received yet.\n");
@@ -84,13 +84,14 @@ int chatDaemon(char *argv[],int runs){  //function for the chat daemon, return 1
 
 void printMessage(FILE * stream,char tt, int key){ //function to print the received messages
 	char tmp,input[10000];
+	tt = (tt-key)%256;
 	printf("Received: %c",tt);
 	int i=0,j;
 	while((tmp= fgetc(stream)) != EOF){
 		input[i] = tmp;
-		//printf("%c",tmp);
+		i++;
 	}
-	decryptMessage(input,key,i);
+	decryptMessage(input,key,i); //decrypts the message using the library we imported
 	for(j=0;j<i;j++){printf("%c",input[j]);}
 	printf("\n");
 }
@@ -110,6 +111,7 @@ void sendMessage(FILE * stream,char *username,int key){ //function to send messa
 		input[counter]='[';
 		counter++;
 		while(username[counter-1]!='\0'){input[counter]=username[counter-1];counter++;}
+		input[counter]=']';counter++;
 		while(tmp!='\n'){
 			//fputc(tmp,stream);
 			input[counter]=tmp;
@@ -117,7 +119,7 @@ void sendMessage(FILE * stream,char *username,int key){ //function to send messa
 			counter++;
 		}
 		input[counter]='\0';
-		encryptMessage(input,key,counter-1);
+		encryptMessage(input,key,counter+1);
 		fputs(input,stream);
 		fputc(EOF,stream);
 	}

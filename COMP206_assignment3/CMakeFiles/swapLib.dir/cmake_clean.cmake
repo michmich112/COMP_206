@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/swapLib.dir/encryption.c.o"
   "libswapLib.pdb"
-  "libswapLib.dylib"
+  "libswapLib.so"
 )
 
 # Per-language clean rules from dependency scanning.

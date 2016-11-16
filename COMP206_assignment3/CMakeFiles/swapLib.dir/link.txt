@@ -1,1 +1,1 @@
-/Library/Developer/CommandLineTools/usr/bin/cc   -dynamiclib -Wl,-headerpad_max_install_names  -o libswapLib.dylib -install_name /Users/Michel/Code/C/COMP_206/COMP206_assignment3/libswapLib.dylib CMakeFiles/swapLib.dir/encryption.c.o 
+/usr/bin/cc  -fPIC   -shared -Wl,-soname,libswapLib.so -o libswapLib.so CMakeFiles/swapLib.dir/encryption.c.o 

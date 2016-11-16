@@ -1,1 +1,1 @@
-/Library/Developer/CommandLineTools/usr/bin/cc   -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/Q3COMP206.dir/q3_encrypted_chat.c.o  -o Q3COMP206  libswapLib.dylib 
+/usr/bin/cc     CMakeFiles/Q3COMP206.dir/q3_encrypted_chat.c.o  -o Q3COMP206 -rdynamic libswapLib.so -Wl,-rpath,/home/2016/mcanta5/Code/COMP_206/COMP206_assignment3 
