@@ -1,22 +1,26 @@
-# Specify the minimum version for CMake
+cmake_minimum_required (VERSION 2.8.9)
+project (Q3COMP206)
 
-cmake_minimum_required(VERSION 2.8)
+add_library(swapLib SHARED encryption.c)
 
-# Project's name
+add_executable(Q3COMP206 q3_encrypted_chat.c)
+target_link_libraries(Q3COMP206 swapLib)
 
-project(hello)
-# Set the output folder where your program will be created
-set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
-set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-
+# The version number.
+#set (Q3COMP206_VERSION_MAJOR 1)
+#set (Q3COMP206_VERSION_MINOR 0)
+ 
 # configure a header file to pass some of the CMake settings
 # to the source code
-configure_file (
-  #"${PROJECT_SOURCE_DIR}/TutorialConfig.h.in"
-  "${PROJECT_BINARY_DIR}/TutorialConfig.h"
-  )
-
-# The following folder will be included
-include_directories("${PROJECT_SOURCE_DIR}")
+#configure_file (
+#  "${PROJECT_SOURCE_DIR}/encryption.h"
+#  "${PROJECT_BINARY_DIR}/encryption.h"
+#  )
+ 
+# add the binary tree to the search path for include files
+# so that we will find TutorialConfig.h
+#include_directories("${PROJECT_BINARY_DIR}")
+ 
+# add the executable
+#add_executable(Tutorial q3_encrypted_chat.c)
 

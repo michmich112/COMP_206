@@ -11,23 +11,9 @@
 #include <unistd.h>
 #include "encryption.h"
 
-struct s_listnode {
-    char element;
-    struct s_listnode * pnext;
-};
-
-struct queueData {
-    struct s_listnode *queue_buffer; //start empty
-    struct s_listnode *prear; //start empty
-};
-
 int chatDaemon(char *argv[], int runs);
-void printMessage(FILE * stream, char tmp);
-void sendMessage(FILE * stream, char *username);
-//queue functions
-struct queueData newQueue(void);
-void enqueue(char elem,struct queueData * data);
-char dequeue(struct queueData * data);
+void printMessage(FILE * stream, char tt,int key);
+void sendMessage(FILE * stream, char *username,int key);
 
 int main(int argc, char *argv[]){
 	int i=1,runs=1;
@@ -40,100 +26,99 @@ int main(int argc, char *argv[]){
 
 int chatDaemon(char *argv[],int runs){  //function for the chat daemon, return 1 for a successful turn
 	char *username = argv[3],tmp;
+	int key=atoi(argv[4]);
 	FILE * inputFile;
 	FILE * outputFile;
 
-	struct queueData queue = newQueue();
-
 	inputFile = fopen(argv[1],"r");
-	tmp = fgetc(inputFile);
+	//tmp = fgetc(inputFile);
 
-	if((inputFile == NULL ||tmp==EOF)&& runs == 1){
+	if((inputFile == NULL) && runs == 1){
 		printf("Nothing received yet.\n");
-	} else if((inputFile == NULL || tmp==EOF) && runs >= 2){
-		while(inputFile == NULL || tmp==EOF){
+	}else if((inputFile != NULL) && runs ==1){
+ 		tmp = fgetc(inputFile);
+		if(tmp==EOF){printf("Nothing received yet.\n");}
+	}else if((inputFile == NULL) && runs >= 2){
+		while(inputFile == NULL){
+			fclose(inputFile);
+			sleep(1);//wait before reopening the file to avoid stream errors on the same file.
+			inputFile = fopen(argv[1],"r");
+		}
+		if((tmp=fgetc(inputFile))==EOF && runs >= 2){ 
+		while(tmp==EOF){
 			fclose(inputFile);
 			sleep(1);//wait before reopening the file to avoid stream errors on the same file.
 			inputFile = fopen(argv[1],"r");
 			tmp = fgetc(inputFile);
 		}
-		printMessage(inputFile,tmp);
+		printMessage(inputFile,tmp,key);
 		fclose(inputFile);
 		inputFile = fopen(argv[1], "w");
 		fclose(inputFile);
-	} else {
-		printMessage(inputFile,tmp);
+		}
+	}else if((tmp=fgetc(inputFile))==EOF && runs >= 2){ 
+		while(tmp==EOF){
+			fclose(inputFile);
+			sleep(1);//wait before reopening the file to avoid stream errors on the same file.
+			inputFile = fopen(argv[1],"r");
+			tmp = fgetc(inputFile);
+		}
+		printMessage(inputFile,tmp,key);
+		fclose(inputFile);
+		inputFile = fopen(argv[1], "w");
+		fclose(inputFile);
+	}else {
+		printMessage(inputFile,tmp,key);
 		fclose(inputFile);
 		inputFile = fopen(argv[1], "w");
 		fclose(inputFile);
 	}
 
 	outputFile = fopen(argv[2],"w"); // opens the file for writing and creates it if it doesn't exist
-	sendMessage(outputFile,username);
+	sendMessage(outputFile,username,key);
 	fclose(outputFile);
 
 	return 1;
 }
 
 
-void printMessage(FILE * stream,char tt){ //function to print the received messages
-	char tmp;
+void printMessage(FILE * stream,char tt, int key){ //function to print the received messages
+	char tmp,input[10000];
 	printf("Received: %c",tt);
+	int i=0,j;
 	while((tmp= fgetc(stream)) != EOF){
-		printf("%c",tmp);
+		input[i] = tmp;
+		//printf("%c",tmp);
 	}
+	decryptMessage(input,key,i);
+	for(j=0;j<i;j++){printf("%c",input[j]);}
 	printf("\n");
 }
 
-void sendMessage(FILE * stream,char *username){ //function to send messages
-	char tmp;
+void sendMessage(FILE * stream,char *username,int key){ //function to send messages
+	char tmp,input[10000];
+	int counter=0;
 	printf("Send:");
 	tmp=getc(stdin);
 	if(tmp=='\n'){
 		printf("Session terminated due to end of input stream\n");
 		exit(1);
 	} else {
-		fputc('[',stream);
+		/*fputc('[',stream);
 		fputs(username,stream);
-		fputs("] ",stream);
+		fputs("] ",stream);*/
+		input[counter]='[';
+		counter++;
+		while(username[counter-1]!='\0'){input[counter]=username[counter-1];counter++;}
 		while(tmp!='\n'){
-			fputc(tmp,stream);
+			//fputc(tmp,stream);
+			input[counter]=tmp;
 			tmp=getc(stdin);
+			counter++;
 		}
+		input[counter]='\0';
+		encryptMessage(input,key,counter-1);
+		fputs(input,stream);
 		fputc(EOF,stream);
 	}
-}
-
-struct queueData newQueue(void){
-    struct queueData data;
-    data.queue_buffer = NULL;
-    data.prear = NULL;
-    return data;
-}
-
-void enqueue(char elem,struct queueData * data) {
-    struct s_listnode *new_node = (struct s_listnode *) malloc(sizeof(struct s_listnode));
-    new_node->element = elem;
-    new_node->pnext = NULL; // at rear
-    if (data->prear){
-        data->prear->pnext = new_node;
-    } else {
-        data->queue_buffer = new_node;
-    }
-    data->prear = new_node;
-}
-
-char dequeue(struct queueData * data) {
-    if (data->queue_buffer) {
-        struct s_listnode *pelem = (data->queue_buffer);
-        char elem = data->queue_buffer->element;
-        data->queue_buffer = pelem->pnext;
-        if (pelem == (data->prear)){
-            data->prear = NULL;
-        }
-        free(pelem);
-        return elem;
-    } else {
-        return 0;
-    }
 }

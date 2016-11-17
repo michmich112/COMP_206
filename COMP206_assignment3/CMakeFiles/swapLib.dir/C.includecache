@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/Michel/Code/C/COMP_206/COMP206_assignment3/encryption.c
+encryption.h
+/Users/Michel/Code/C/COMP_206/COMP206_assignment3/encryption.h
+
+/Users/Michel/Code/C/COMP_206/COMP206_assignment3/encryption.h
+
