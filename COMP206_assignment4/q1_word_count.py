@@ -1,18 +1,22 @@
+#Author		: Michel Cantacuzene
+#Description: Finds the frequency of word apearences in a text file
+
 #!/usr/bin/python
 import operator
 import sys
 
 #defining variables
-filename = sys.argv[1]
+global filename
 words = {} #dictionary where we will store the words and the number of repetitions
-punctuation = [",",'.',";",":","?","!","'","(",")","{","}","[","]","-"]
+punctuation = [",",'.',";",":","?","!","'","(",")","{","}","[","]","-",">","<","+","=",'"']
 
 def main():
 	#error handler
-	if len(sys.argv) != 3 :
+	if len(sys.argv) != 2 :
 		print "Plese input a file name."
 		quit(1)
-
+	else:
+		filename = sys.argv[1]
 	#opens the file
 	try:
 		file = open(filename,"r")
