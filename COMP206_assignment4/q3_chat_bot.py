@@ -80,7 +80,7 @@ def associateNext(word): #function to get an associated word to the querry
 	for key in keyz:
 		k = key.split('-')
 		if k[0] == word:
-			possibilities.append(k[0])
+			possibilities.append(k[1])
 	if len(possibilities) < 1:
 		k = keyz[randint(0,len(keyz))].split('-')
 		possibilities.append(k[randint(0,1)])
