@@ -42,14 +42,6 @@ def initializeFrequency(liste):
 		else:
 			words[str(liste[word])+"-"+str(liste[word+1])] += 1
 
-#displays the frequencies of word-pairs
-def displayFrequency():
-	keys = words.keys()
-	sorted_words = sorted(words.items(), key=operator.itemgetter(1))
-	sorted_words.reverse()
-	for items in sorted_words:
-		print(str(items[0])+": "+str(items[1]))
-
 #this is the chatbot
 def chatBot(): 
 	print("Welcome to chatbot! This is a very poorly designed chat AI. just type your words and enjoy the response. To quit press enter without having written a response.\nHave fun!")
@@ -80,10 +72,11 @@ def associateNext(word): #function to get an associated word to the querry
 	for key in keyz:
 		k = key.split('-')
 		if k[0] == word:
-			possibilities.append(k[1])
+			possibilities.append(k[1]) #appends the paired word to the possibilities list
 	if len(possibilities) < 1:
 		k = keyz[randint(0,len(keyz))].split('-')
 		possibilities.append(k[randint(0,1)])
 	return possibilities
 
+#start up the main function to run the program
 main()
