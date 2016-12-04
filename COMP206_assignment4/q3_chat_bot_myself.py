@@ -45,7 +45,7 @@ def initializeFrequency(liste):
 #this is the chatbot
 def chatBot(): 
 	print("Welcome to chatbot! This is a very poorly designed chat AI. just type your words and enjoy the response. To quit press enter without having written a response.\nHave fun!")
-	userInput=str(raw_input("Send: ")) #display the prompt
+	userInput=str(raw_input("[user]-> ")) #display the prompt
 	while userInput != "": #the hat goes on till the user presses return without inputing a response
 		response = "" #initiate the response string
 		userInput.lower()
@@ -57,21 +57,14 @@ def chatBot():
 		lastWord = userInput[len(userInput)-1]
 		response += lastWord #input the last word as the first word because... why not?
 		response += " "
-		lastWord = associateNext(lastWord)[randint(0,len(associateNext(lastWord))-1)] #get the paird word
-		if len(lastWord)<1:
-			k = words.keys()
-			lastWord = k[randint(0,len(k)-1)].split('-')[randint(0,1)]
-		response += lastWord
-		for i in range(18): #go through up to 20 words
+		response += associateNext(lastWord)[randint(0,len(associateNext(lastWord))-1)] #add one of paired word to the last word
+		for i in range(len(userInput)-1): #go through all the words except the last word
 			response += " "
-			lastWord = associateNext(lastWord)[randint(0,len(associateNext(lastWord))-1)] #get the paird word
-			if len(lastWord)<1:
-				break
-			else:
-				response += lastWord
-		response += "."
-		print("Received: "+response)
-		userInput=str(raw_input("Send: "))
+			lastWord = userInput[i]
+			response += associateNext(lastWord)[randint(0,len(associateNext(lastWord))-1)] #get the paird word 
+
+		print("[chatbot] -> "+response)
+		userInput=str(raw_input("[user]-> "))
 
 def associateNext(word): #function to get an associated word to the querry
 	keyz = words.keys()
