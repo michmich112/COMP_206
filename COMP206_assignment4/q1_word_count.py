@@ -2,13 +2,14 @@
 #Description: Finds the frequency of word apearences in a text file
 
 #!/usr/bin/python
+
 import operator
 import sys
 
 #defining variables
 global filename
 words = {} #dictionary where we will store the words and the number of repetitions
-punctuation = [",",'.',";",":","?","!","'","(",")","{","}","[","]","-",">","<","+","=",'"']
+punctuation = [",",'.',";",":","?","!","'","(",")","{","}","[","]","-",">","<","+","=",'"'] #punctuation marks to watch out for and remove
 
 def main():
 	#error handler
@@ -31,13 +32,15 @@ def main():
 	except IOError:
 		print("File is unreadable or doesn't exist. Please change permisions or create the file")
 
-def initializeFrequency(liste):
+#gets the frequencies of words
+def initializeFrequency(liste): 
 	for word in liste:
 		if words.get(word,0) == 0:
 			words[word] = 1
 		else:
 			words[word] += 1
 
+#displays the result
 def displayFrequency():
 	keys = words.keys()
 	sorted_words = sorted(words.items(), key=operator.itemgetter(1))
