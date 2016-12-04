@@ -8,7 +8,7 @@ from random import randint
 
 global filename
 words = {} #dictionary where we will store the words and the number of repetitions
-punctuation = [",",'.',";",":","?","!","'","(",")","{","}","[","]","-",">","<","+","=",'"',"_","*","&"] #punctuation marks to watch out for and remove
+punctuation = [",",'.',";",":","?","!","'","(",")","{","}","[","]","-",">","<","+","=",'"',"_","*","&","|"] #punctuation marks to watch out for and remove
 
 def main():
 	#error handler
@@ -57,20 +57,23 @@ def chatBot():
 		lastWord = userInput[len(userInput)-1]
 		response += lastWord #input the last word as the first word because... why not?
 		response += " "
-		lastWord = associateNext(lastWord)[randint(0,len(associateNext(lastWord))-1)] #get the paird word
+		lastWord = associateNext(lastWord)#[randint(0,len(associateNext(lastWord))-1)] #get the paird word
 		if len(lastWord)<1:
 			k = words.keys()
 			lastWord = k[randint(0,len(k)-1)].split('-')[randint(0,1)]
+		else:
+			lastWord = lastWord[randint(0,len(lastWord)-1)]
 		response += lastWord
 		for i in range(18): #go through up to 20 words
-			response += " "
-			lastWord = associateNext(lastWord)[randint(0,len(associateNext(lastWord))-1)] #get the paird word
+			lastWord = associateNext(lastWord)#[randint(0,len(associateNext(lastWord))-1)] #get the paird word
 			if len(lastWord)<1:
 				break
 			else:
+				response += " "
+				lastWord = lastWord[randint(0,len(lastWord)-1)]
 				response += lastWord
 		response += "."
-		print("Received: "+response)
+		print("Received: "+capitalizeResponse(response))
 		userInput=str(raw_input("Send: "))
 
 def associateNext(word): #function to get an associated word to the querry
@@ -80,10 +83,10 @@ def associateNext(word): #function to get an associated word to the querry
 		k = key.split('-')
 		if k[0] == word:
 			possibilities.append(k[1]) #appends the paired word to the possibilities list
-	if len(possibilities) < 1:
-		k = keyz[randint(0,len(keyz))].split('-')
-		possibilities.append(k[randint(0,1)])
 	return possibilities
+
+def capitalizeResponse(response):
+	return response[:0].lower() + response[0:].capitalize() #capitalize the first letter but not the rest
 
 #start up the main function to run the program
 main()
