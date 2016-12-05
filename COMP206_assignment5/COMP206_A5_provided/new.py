@@ -42,10 +42,10 @@ def saveBMPImage( out_img_data, out_fname ):
 def parse():
   #error handlers
   data = loadBMPImage( sys.argv[1] )
-  filter_width = int(sys.argv[4])
+  filter_width = int(sys.argv[3])
   filter_weights = []
 
-  for i in range(filter_width^2):
+  for i in range(filter_width*filter_width):
     #errorHandler
     filter_weights.append(float(sys.argv[4+i]))
 
