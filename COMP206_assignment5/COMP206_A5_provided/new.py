@@ -47,14 +47,14 @@ def parse():
 
   for i in range(filter_width^2):
     #errorHandler
-    filter_weights.append(float(sys.argv[5+i]))
+    filter_weights.append(float(sys.argv[4+i]))
 
   c_filter_weights = (ctypes.c_float *len(filter_weights)) (*filter_weights)
   c_filter_width = ctypes.c_int(filter_width)
   output_data = [''] *len(data)
   output_data = ctypes.create_string_buffer(len(data))
   
-  lib = ctypes.cdll.LoadLibrary("./libfast_filter.so")
+  lib = ctypes.cdll.LoadLibrary(dir_path+"/libfast_filter.so")
   lib.doFiltering(data, c_filter_weights, c_filter_width, output_data)
   saveBMPImage(output_data, sys.argv[2])
 
