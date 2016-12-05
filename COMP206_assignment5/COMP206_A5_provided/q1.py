@@ -22,6 +22,8 @@
 import sys
 import struct
 import copy
+import os
+dir_path = os.path.dirname(os.path.realpath(__file__))
 from ctypes import *
 
 # Reads a BMP image from disk into a convenient array format
@@ -103,8 +105,8 @@ def saveBMPImage( out_img_data, header_data, out_fname, img_height, img_width ):
 
   img_out.close()
 
-cdll.loadLibrary("libfast_filter.so")
-libc = CDLL("libfast_filter.so")
+cdll.LoadLibrary(dir_path+"/libfast_filter.so")
+libc = CDLL(dir_path+"/libfast_filter.so")
 # The main code starts here 
 (img_data, header_data, img_height, img_width) = loadBMPImage( sys.argv[1] )
 (filter_width, filter_weights) = parseFilterCmdArgs( sys.argv )
