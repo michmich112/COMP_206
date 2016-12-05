@@ -26,6 +26,10 @@ import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 from ctypes import *
 
+import os 
+dir_path = os.path.dirname(os.path.realpath(__file__))
+
+
 # Reads a BMP image from disk into a convenient array format
 def loadBMPImage( img_name ):
 
@@ -75,7 +79,7 @@ def parseFilterCmdArgs( cmd_args ):
 
 # Do the actual filtering operation by applying
 # the filter to the data and storing the result in out_img_data
-'''
+
 def doConvolution( img_data, filter_width, filter_weights, img_height, img_width ):
   
   out_img_data = copy.deepcopy(img_data)
@@ -91,7 +95,7 @@ def doConvolution( img_data, filter_width, filter_weights, img_height, img_width
             filter_index = filter_index+1
           
   return out_img_data     
-  '''
+
 
 
 # Write the output image to file  
@@ -106,11 +110,14 @@ def saveBMPImage( out_img_data, header_data, out_fname, img_height, img_width ):
   img_out.close()
 
 cdll.LoadLibrary(dir_path+"/libfast_filter.so")
+<<<<<<< HEAD
 libc = CDLL(dir_path+"/libfast_filter.so")
+=======
+libc = CDLL("libfast_filter.so")
+>>>>>>> c3812320e38a5b80e0d2efc8a6365cf56aadd899
 # The main code starts here 
 (img_data, header_data, img_height, img_width) = loadBMPImage( sys.argv[1] )
 (filter_width, filter_weights) = parseFilterCmdArgs( sys.argv )
 out_img_data = libc.doFiltering( img_data, filter_width, filter_weights, img_height, img_width )
 saveBMPImage( out_img_data, header_data, sys.argv[2], img_height, img_width )
-
 
