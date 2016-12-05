@@ -1,0 +1,17 @@
+<html>
+
+<body>
+<form name="input" action="./cgi-bin/q3_cgi_filter.py" method="post" enctype="multipart/form-data">
+
+  <p>Photo to Upload: <input type="file" name="photo" /></p>
+  <p>First Filter to Apply:</p>
+  <p><input type="text" name="00" value="1"> <input type="text" name="01" value="1"> <input type="text" name="02"  value="1"> </p>
+  <p><input type="text" name="10" value="1"> <input type="text" name="11" value="-7"> <input type="text" name="12" value="1"> </p>
+  <p><input type="text" name="20" value="1"> <input type="text" name="21"  value="1"> <input type="text" name="22" value="1"> </p>
+  <input type="submit" value="Load" name="load">
+  <input type="submit" value="Filter" name="filter">
+  <input type="submit" value="Undo" name="undo">
+  <input type="submit" value="Redo" name="redo">
+</form>
+</body>
+</html>
