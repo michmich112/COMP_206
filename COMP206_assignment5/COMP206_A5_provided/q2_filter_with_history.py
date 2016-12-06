@@ -30,7 +30,7 @@ if str(firstLine[3]) != "none":
   loadedImage = str(firstLine[3])
 else:
   loadedImage = None
-#currentData = None
+#currentData = None 
 presentCounter = int(firstLine[0])
 furthestCounter = int(firstLine[1])
 mostRecentLoad = int(firstLine[2])
@@ -60,7 +60,7 @@ def inputParser(provided=None):
     quit(1)
 
   if provided == None:
-    passToHistory(userInput)
+    passToHistory(currentInput)
     updateHeader()
   else:
     pass
@@ -77,7 +77,6 @@ def loadBMPImage( img_name ):
     return data
   except IOError:
     print(img_name+"is unreadable or doesn't exist. Please input a correct filename.")
-    img_in.close()
     quit(1)
 
 # Write the output image to file  
@@ -99,7 +98,7 @@ def parse(argv):
     if int(argv[2])%2 != 1:
       print("Input a correct matrix value. Integer has to be odd.\nType help for input help")
       quit(1)
-    elif len(argv) != 2+(int(sys.argv[2])**2):
+    elif len(argv) != 3+(int(sys.argv[2])**2):
       print("Not enough arguments. Enter a correct input.\nType help for input help")
       quit(1)
   except ValueError:
@@ -141,9 +140,13 @@ def findLoad( currentSpace ):
 
 def load(img_name):
   loadBMPImage(img_name)
+  global presentCounter 
+  global furthestCounter 
+  global mostRecentLoad
   presentCounter += 1
   furthestCounter = presentCounter
   mostRecentLoad = presentCounter
+
 
 def undo():
   if presentCounter >= 1:
