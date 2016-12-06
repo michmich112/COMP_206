@@ -1,20 +1,32 @@
 #!/usr/bin/python
 import sys
 import ctypes
-#import pickle
+import pickle
 
 #permits us to get the CWD whether it be on Windows or a Unix system
 import os
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
+HistoryData = []
 historyFileName = "history.pickle"
 try:
   historyFile = open( historyFileName , "rb")
+  historyFile.close()
+  HistoryData = pickle.load(historyFileName)
+  if HistoryData[0][3] != "none":
+    loadedImage = HistoryData[0][3]
+  else:
+    loadedImage = None
+  #currentData = None
+  presentCounter = HistoryData[0][0]
+  furthestCounter = HistoryData[0][1]
+  mostRecentLoad = HistoryData[0][2]
+
 except IOError:
   historyFile = open( historyFileName , "wb")
-  historyFile.write("1 1 1 none")
   historyFile.close()
-  historyFile = open( historyFileName , "rb")
+  HistoryData.append([0,0,0,"none"]) #if there was an error this means that no value wasinputed in the file
+  pickle.dump(HistoryData,historyFileName)
 
 '''
 *   we store information as folows
@@ -23,17 +35,16 @@ except IOError:
 * 3 Command 2 
 * 4 ...
 '''
-
-firstLine = historyFile.readline().split()
-historyFile.close()
-if str(firstLine[3]) != "none":
-  loadedImage = str(firstLine[3])
-else:
+'''
+*  going to use pickle and store it in a list
+*  [[header data],command1,command2,command3,...]
+'''
   loadedImage = None
-#currentData = None
-presentCounter = int(firstLine[0])
-furthestCounter = int(firstLine[1])
-mostRecentLoad = int(firstLine[2])
+  #currentData = None
+  presentCounter = 0
+  furthestCounter = 0
+  mostRecentLoad = 0
+
 outputFilename = "result.bmp"
 
 #we will make a user terminal so it can interact with the program
