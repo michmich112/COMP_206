@@ -132,9 +132,9 @@ def findLoad( currentSpace ):
     if counter < currentSpace:
       if line.split()[0] == "load":
         currentLoad = counter
-        counter++
+        counter += 1
       else:
-        counter++
+        counter += 1
     else:
       break
   return currentLoad
@@ -176,7 +176,7 @@ def help():
   print("Commands:\nload [image_name.bmp]: loads a new bmp image\nfilter [filter_width] [filter_weights]: applies the inputed convulation matrix on the loaded image\nundo: undoes the last action (if possible)\nredo: redoes the last action (if possible)")
   quit(1)
 
-def passToHistory(userInput)
+def passToHistory(userInput):
   command = ""
   for querry in userInput:
     command += str(querry)
@@ -208,9 +208,9 @@ def updateHeader():
   historyFile.close()
 
   historyFile = open(historyFileName, "a")
-  for i in range(1,len(data))
+  for i in range(1,len(data)):
     historyFile.write(toString(data[i]))
   historyFile.close()
 
 
-parse()
+inputParser()
