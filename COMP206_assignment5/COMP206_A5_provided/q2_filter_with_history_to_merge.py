@@ -40,11 +40,18 @@ except IOError:
 *  [[header data],command1,command2,command3,...]
 '''
   loadedImage = None
+<<<<<<< HEAD:COMP206_assignment5/COMP206_A5_provided/q2_filter_with_history_to_merge.py
   #currentData = None
   presentCounter = 0
   furthestCounter = 0
   mostRecentLoad = 0
 
+=======
+#currentData = None 
+presentCounter = int(firstLine[0])
+furthestCounter = int(firstLine[1])
+mostRecentLoad = int(firstLine[2])
+>>>>>>> b258df39ef43db0f605763e5873a3b0f362d6fff:COMP206_assignment5/COMP206_A5_provided/q2_filter_with_history.py
 outputFilename = "result.bmp"
 
 #we will make a user terminal so it can interact with the program
@@ -71,7 +78,7 @@ def inputParser(provided=None):
     quit(1)
 
   if provided == None:
-    passToHistory(userInput)
+    passToHistory(currentInput)
     updateHeader()
   else:
     pass
@@ -88,7 +95,6 @@ def loadBMPImage( img_name ):
     return data
   except IOError:
     print(img_name+"is unreadable or doesn't exist. Please input a correct filename.")
-    img_in.close()
     quit(1)
 
 # Write the output image to file  
@@ -110,7 +116,7 @@ def parse(argv):
     if int(argv[2])%2 != 1:
       print("Input a correct matrix value. Integer has to be odd.\nType help for input help")
       quit(1)
-    elif len(argv) != 2+(int(sys.argv[2])**2):
+    elif len(argv) != 3+(int(sys.argv[2])**2):
       print("Not enough arguments. Enter a correct input.\nType help for input help")
       quit(1)
   except ValueError:
@@ -143,18 +149,22 @@ def findLoad( currentSpace ):
     if counter < currentSpace:
       if line.split()[0] == "load":
         currentLoad = counter
-        counter++
+        counter += 1
       else:
-        counter++
+        counter += 1
     else:
       break
   return currentLoad
 
 def load(img_name):
   loadBMPImage(img_name)
+  global presentCounter 
+  global furthestCounter 
+  global mostRecentLoad
   presentCounter += 1
   furthestCounter = presentCounter
   mostRecentLoad = presentCounter
+
 
 def undo():
   if presentCounter >= 1:
@@ -187,7 +197,7 @@ def help():
   print("Commands:\nload [image_name.bmp]: loads a new bmp image\nfilter [filter_width] [filter_weights]: applies the inputed convulation matrix on the loaded image\nundo: undoes the last action (if possible)\nredo: redoes the last action (if possible)")
   quit(1)
 
-def passToHistory(userInput)
+def passToHistory(userInput):
   command = ""
   for querry in userInput:
     command += str(querry)
@@ -219,9 +229,9 @@ def updateHeader():
   historyFile.close()
 
   historyFile = open(historyFileName, "a")
-  for i in range(1,len(data))
+  for i in range(1,len(data)):
     historyFile.write(toString(data[i]))
   historyFile.close()
 
 
-parse()
+inputParser()
