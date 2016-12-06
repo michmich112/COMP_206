@@ -1,0 +1,20 @@
+(lp0
+(lp1
+I3
+aI3
+aI0
+aS'utah.bmp'
+p2
+aaS'q2_filter_with_history_to_merge.py load utah.bmp '
+p3
+aS'q2_filter_with_history_to_merge.py load Mars.bmp '
+p4
+aS'q2_filter_with_history_to_merge.py load utah.bmp '
+p5
+a. '
+p5
+aS'q2_filter_with_history_to_merge.py filter 3 1 1 1 1 -2 1 1 1 1 '
+p6
+a. '
+p6
+a.

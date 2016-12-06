@@ -55,6 +55,7 @@ def initialize():
 
 #we will make a user terminal so it can interact with the program
 def inputParser(provided=None):
+  global presentCounter,furthestCounter
   initialize()
 
   if provided == None:
@@ -64,16 +65,21 @@ def inputParser(provided=None):
 
   if currentInput[1] == "load":
     load(currentInput[2])
-    print(currentInput[2] + " was successfully loaded!")
+    #print(currentInput[2] + " was successfully loaded!")
     if provided == None:
       print(currentInput[2] + " was successfully loaded!")
       passToHistory(currentInput)
+      presentCounter += 1
+      furthestCounter = presentCounter
+      mostRecentLoad = presentCounter
       updateHeader()
   elif currentInput[1] == "filter":
     parse(currentInput)
     if provided == None:
       print("Convulation Terminated successfully!")
       passToHistory(currentInput)
+      presentCounter += 1
+      furthestCounter = presentCounter
       updateHeader()
   elif currentInput[1] == "undo":
     undo()
@@ -139,8 +145,6 @@ def parse(argv):
   lib.doFiltering(data, c_filter_weights, c_filter_width, output_data)
   saveBMPImage(output_data, outputFilename)
 
-  presentCounter += 1
-  furthestCounter = presentCounter
 
 def findLoad( currentSpace ):
   global HistoryData
@@ -158,24 +162,23 @@ def load(img_name):
   global presentCounter, furthestCounter, mostRecentLoad, outputFilename
   data = loadBMPImage(img_name)
   saveBMPImage(data, outputFilename)
-  presentCounter += 1
-  furthestCounter = presentCounter
-  mostRecentLoad = presentCounter
 
 
 def undo():
   global presentCounter,mostRecentLoad,HistoryData
   if presentCounter >= 1:
-    presentCounter -=1
+    presentCounter -= 1
+    print(presentCounter)
   else:
     print("Cannot Undo!")
     quit(1)
-  if mostRecentLoad > presentCounter:
-    mostRecentLoad = findLoad(presentCounter)
-
-  for i in range(mostRecentLoad,presentCounter+1):
+  #if mostRecentLoad > presentCounter:
+  # mostRecentLoad = findLoad(presentCounter)
+  updateHeader()
+  for i in range(0,presentCounter):
     print(str(i)+"\n\n\n")
-    inputParser(HistoryData[i].split())
+    inputParser(HistoryData[i+1].split())
+    print presentCounter
   updateHeader()
 
 
@@ -201,13 +204,12 @@ def help():
 def passToHistory(userInput):
   global HistoryData,historyFileName,presentCounter,furthestCounter
   if len(HistoryData) > presentCounter+1:
-    print("it is true\n\n\n\n")
     for i in range(len(HistoryData)-(presentCounter+1)):
       del HistoryData[len(HistoryData)-1]
   furthestCounter = presentCounter
   HistoryData.append(toString(userInput))
   pickle.dump(HistoryData,open(historyFileName,"r+"))
-  print(HistoryData)
+  #print(HistoryData) #for debugging purpouses
 
 def toString( liste ):
   string = ""
@@ -217,7 +219,8 @@ def toString( liste ):
   return string
 
 def updateHeader():
-  global HistoryData,historyFileName
+  global HistoryData,historyFileName,presentCounter,furthestCounter,mostRecentLoad,loadedImage
+  print presentCounter
   HistoryData[0][0] = presentCounter
   HistoryData[0][1] = furthestCounter
   HistoryData[0][2] = mostRecentLoad
