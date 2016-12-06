@@ -9,53 +9,54 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 HistoryData = []
 historyFileName = "history.pickle"
-try:
-  historyFile = open( historyFileName , "rb")
-  historyFile.close()
-  HistoryData = pickle.load(historyFileName)
-  if HistoryData[0][3] != "none":
-    loadedImage = HistoryData[0][3]
-  else:
-    loadedImage = None
-  #currentData = None
-  presentCounter = HistoryData[0][0]
-  furthestCounter = HistoryData[0][1]
-  mostRecentLoad = HistoryData[0][2]
-
-except IOError:
-  historyFile = open( historyFileName , "wb")
-  historyFile.close()
-  HistoryData.append([0,0,0,"none"]) #if there was an error this means that no value wasinputed in the file
-  pickle.dump(HistoryData,historyFileName)
-
-'''
-*   we store information as folows
-* 1 <presentCounter> <furthestCounter> <mostRecentLoad> <loadedFile>
-* 2 Command 1
-* 3 Command 2 
-* 4 ...
-'''
-'''
-*  going to use pickle and store it in a list
-*  [[header data],command1,command2,command3,...]
-'''
-  loadedImage = None
-<<<<<<< HEAD:COMP206_assignment5/COMP206_A5_provided/q2_filter_with_history_to_merge.py
-  #currentData = None
-  presentCounter = 0
-  furthestCounter = 0
-  mostRecentLoad = 0
-
-=======
-#currentData = None 
-presentCounter = int(firstLine[0])
-furthestCounter = int(firstLine[1])
-mostRecentLoad = int(firstLine[2])
->>>>>>> b258df39ef43db0f605763e5873a3b0f362d6fff:COMP206_assignment5/COMP206_A5_provided/q2_filter_with_history.py
+presentCounter
+furthestCounter
+mostRecentLoad
+loadedImage
 outputFilename = "result.bmp"
+
+def initialize():
+  global HistoryData, presentCounter,furthestCounter,mostRecentLoad,loadedImage
+  try:
+    historyFile = open( historyFileName , "rb")
+    historyFile.close()
+    HistoryData = pickle.load(historyFileName)
+    if HistoryData[0][3] != "none":
+      loadedImage = HistoryData[0][3]
+    else:
+      loadedImage = None
+    #currentData = None
+    presentCounter = HistoryData[0][0]
+    furthestCounter = HistoryData[0][1]
+    mostRecentLoad = HistoryData[0][2]
+
+  except IOError:
+    historyFile = open( historyFileName , "wb")
+    historyFile.close()
+    HistoryData.append([0,0,0,None]) #if there was an error this means that no value wasinputed in the file
+    pickle.dump(HistoryData,historyFileName)
+
+  '''
+  *   we store information as folows
+  * 1 <presentCounter> <furthestCounter> <mostRecentLoad> <loadedFile> 
+  * 2 Command 1
+  * 3 Command 2 
+  * 4 ...
+  '''
+  '''
+  *  going to use pickle and store it in a list
+  *  [[header data],command1,command2,command3,...]
+  '''
+    loadedImage = None
+    #currentData = None
+    presentCounter = 0
+    furthestCounter = 0
+    mostRecentLoad = 0
 
 #we will make a user terminal so it can interact with the program
 def inputParser(provided=None):
+  initialize()
+
   if provided == None:
     currentInput = sys.argv
   else:
@@ -63,10 +64,16 @@ def inputParser(provided=None):
 
   if currentInput[1] == "load":
     load(currentInput[2])
-    print(currentInput[2] + " was successfully loaded!")
+    if provided == None:
+      print(currentInput[2] + " was successfully loaded!")
+      passToHistory(currentInput)
+      updateHeader()
   elif currentInput[1] == "filter":
     parse(currentInput)
-    print("Convulation Terminated successfully!")
+    if provided == None:
+      print("Convulation Terminated successfully!")
+      passToHistory(currentInput)
+      updateHeader()
   elif currentInput[1] == "undo":
     undo()
   elif currentInput[1] == "redo":
@@ -77,11 +84,6 @@ def inputParser(provided=None):
     print("Incorrect Input.\nType: \n\t$python q2_filter_with_history.py help\nto get input help.")
     quit(1)
 
-  if provided == None:
-    passToHistory(currentInput)
-    updateHeader()
-  else:
-    pass
 
 
 # Reads a BMP image from disk into a convenient array format
@@ -105,13 +107,7 @@ def saveBMPImage( out_img_data, out_fname ):
   img_out.close()
 
 def parse(argv):
-  '''#error handlers
-  if sys.argv[1] == "--help" or sys.argv[1] == "-h":
-    print("Usage:\n$python q1_image_filter.py [base file name] [output file name] [convulation matrix size] [matrix elements]\n The filenames must have the .bmp extension\n The convulation matrix size must be an odd integer.\n The matrix elements are seperated by a whitespace\nExample: $python q1_image_filter.py input_filename.bmp output_filename.bmp 3 1 1 1 1 -8 1 1 1 1")
-    quit(1)
-  elif len(sys.argv[]) < 6:
-    print("Not enough arguments. Enter a correct input.\nPass the -h or --help parameters for input help")
-    quit(1)'''
+  global loadedImage,outputFilename
   try: #catch an error if it's not an integer
     if int(argv[2])%2 != 1:
       print("Input a correct matrix value. Integer has to be odd.\nType help for input help")
@@ -141,26 +137,24 @@ def parse(argv):
   lib.doFiltering(data, c_filter_weights, c_filter_width, output_data)
   saveBMPImage(output_data, outputFilename)
 
+  presentCounter += 1
+  furthestCounter = presentCounter
+
 def findLoad( currentSpace ):
-  file = open(historyFileName)#no error possible
+  global HistoryData
   currentLoad = 0
   counter = 0
-  for line in file:
-    if counter < currentSpace:
-      if line.split()[0] == "load":
-        currentLoad = counter
-        counter += 1
-      else:
-        counter += 1
+  while counter <= currentSpace:
+    if line.split()[1] == "load":
+      currentLoad = counter
+      counter += 1
     else:
-      break
+      counter += 1
   return currentLoad
 
 def load(img_name):
   loadBMPImage(img_name)
-  global presentCounter 
-  global furthestCounter 
-  global mostRecentLoad
+  global presentCounter, furthestCounter, mostRecentLoad
   presentCounter += 1
   furthestCounter = presentCounter
   mostRecentLoad = presentCounter
@@ -198,13 +192,12 @@ def help():
   quit(1)
 
 def passToHistory(userInput):
-  command = ""
-  for querry in userInput:
-    command += str(querry)
-    command += " "
-  historyFile = open(historyFileName,"a")
-  historyFile.write(command)
-  historyFile.close()
+  global HistoryData,historyFileName,presentCounter,furthestCounter
+  if len(HistoryData) > presentCounter+1:
+    for i in range(len(HistoryData)-(presentCounter+1)):
+      del HistoryData[-1]
+  HistoryData.append(toString(userInput))
+  pickle.dump(HistoryData,historyFileName)
 
 def toString( liste ):
   string = ""
@@ -214,24 +207,11 @@ def toString( liste ):
   return string
 
 def updateHeader():
-  historyFile = open(historyFileName, "r")
-  data = []
-  for lines in historyFile:
-    data.append(lines.split())
-  data[0][0] = str(presentCounter)
-  data[0][1] = str(furthestCounter)
-  data[0][2] = str(mostRecentLoad)
-  data[0][3] = str(loadedImage)
-  historyFile.close()
-
-  historyFile = open(historyFileName, "w")
-  historyFile.write(toString(data[0]))
-  historyFile.close()
-
-  historyFile = open(historyFileName, "a")
-  for i in range(1,len(data)):
-    historyFile.write(toString(data[i]))
-  historyFile.close()
-
+  global HistoryData,historyFileName
+  HistoryData[0][0] = presentCounter
+  HistoryData[0][1] = furthestCounter
+  HistoryData[0][2] = mostRecentLoad
+  HistoryData[0][3] = loadedImage
+  pickle.dump(HistoryData,historyFileName)
 
 inputParser()
