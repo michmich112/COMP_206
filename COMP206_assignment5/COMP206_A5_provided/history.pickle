@@ -1,20 +1,14 @@
 (lp0
 (lp1
-I3
+I1
 aI3
 aI0
-aS'utah.bmp'
+aS'mario_16_bit.bmp'
 p2
-aaS'q2_filter_with_history_to_merge.py load utah.bmp '
+aaS'q2_filter_with_history_to_merge.py load mario_16_bit.bmp '
 p3
-aS'q2_filter_with_history_to_merge.py load Mars.bmp '
+aS'q2_filter_with_history_to_merge.py filter 3 4 5 6 7 8 8 9 0 1 '
 p4
-aS'q2_filter_with_history_to_merge.py load utah.bmp '
+aS'q2_filter_with_history_to_merge.py filter 3 4 5 6 7 8 9 7 0.3 8 '
 p5
-a. '
-p5
-aS'q2_filter_with_history_to_merge.py filter 3 1 1 1 1 -2 1 1 1 1 '
-p6
-a. '
-p6
 a.

@@ -179,23 +179,19 @@ def undo():
   global presentCounter,mostRecentLoad,HistoryData
   if presentCounter >= 1:
     presentCounter -= 1 #decrese the present conter to read the adequate step while keeping the entire memory
-    print(presentCounter)
   else:
     print("Cannot Undo!")
     quit(1)
   updateHeader()
   for i in range(0,presentCounter):
-    print(str(i)+"\n\n\n")
     inputParser(HistoryData[i+1].split())
-    print presentCounter
   updateHeader()
-
 
 #function to undo an undo aka redo something
 def redo():
   global HistoryData
   if presentCounter < len(HistoryData):
-    inputParser(HistoryData[presentCounter+2].split())
+    inputParser(HistoryData[presentCounter+1].split())
   else:
     print("Cannot Redo!")
     quit(1)
@@ -230,7 +226,6 @@ def toString( liste ):
 #function to update the header section of the file
 def updateHeader():
   global HistoryData,historyFileName,presentCounter,furthestCounter,mostRecentLoad,loadedImage
-  print presentCounter
   HistoryData[0][0] = presentCounter
   HistoryData[0][1] = furthestCounter
   HistoryData[0][2] = mostRecentLoad
