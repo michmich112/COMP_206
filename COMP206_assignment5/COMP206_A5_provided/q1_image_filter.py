@@ -1,3 +1,9 @@
+'''
+*  Author:      Michel Cantacuzene
+*  Name:        q1_image_filter.py
+*  Description: applies a convulation matrix on an image by calling  shared library (.so)
+'''
+
 #!/usr/bin/python
 import sys
 import ctypes
@@ -26,6 +32,7 @@ def saveBMPImage( out_img_data, out_fname ):
     img_out.write( element )
   img_out.close()
 
+#function that applies the convolution matrix to the image
 def parse():
   #error handlers
   if sys.argv[1] == "--help" or sys.argv[1] == "-h":
